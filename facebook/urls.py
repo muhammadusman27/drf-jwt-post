@@ -10,7 +10,8 @@ from rest_framework import routers
 from post import views
 
 router = routers.DefaultRouter()
-router.register(r'post', views.MyPostView)
+router.register(r'post', views.PostView)
+router.register(r'comment', views.CommentView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
