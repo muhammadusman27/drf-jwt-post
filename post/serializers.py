@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Post, Comment
+from .models import Post, Comment, Like
 
 # Register serializer
 class RegisterSerializer(serializers.ModelSerializer):
@@ -42,14 +42,32 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False, required=False, read_only=True)
-    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), write_only=True)
+    post = PostSerializer(many=False, required=False, read_only=True)
+    
+    post_data = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), write_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id', 'comment', 'user', 'post']
+        fields = ['id', 'comment', 'user', 'post', 'post_data']
+        # fields = '__all__'
         read_only_fields = ('user', 'post')
     
     def create(self, validated_data):
-        comment = Comment.objects.create(comment=validated_data['comment'], user=self.context['request'].user, post=validated_data['post'])
+        comment = Comment.objects.create(comment=validated_data['comment'], user=self.context['request'].user, post=validated_data['post_data'])
         return comment
 
+
+class LikeSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False, required=False, read_only=True)
+    post = PostSerializer(many=False, required=False, read_only=True)
+
+    post_data = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), write_only=True)
+
+    class Meta:
+        model = Like
+        fields = ['id', 'like', 'user', 'post', 'post_data']
+        read_only_fields = ('user', 'post')
+
+    def create(self, validated_data):
+        like = Like.objects.create(like=validated_data['like'], user=self.context['request'].user, post=validated_data['post_data'])
+        return like

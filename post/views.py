@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .serializers import RegisterSerializer, PostSerializer, CommentSerializer
+from .serializers import RegisterSerializer, PostSerializer, CommentSerializer, LikeSerializer
 from .models import *
 # Create your views here.
 
@@ -27,3 +27,8 @@ class PostView(viewsets.ModelViewSet):
 class CommentView(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+
+class LikeView(viewsets.ModelViewSet):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer

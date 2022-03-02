@@ -16,3 +16,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"post_id : {self.post.id} | user_id : {self.user.id} | comment_id : {self.id}"
+
+
+class Like(models.Model):
+    like = models.BooleanField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"post_id : {self.post.id} | user_id : {self.user.id} | like_id : {self.id}"
