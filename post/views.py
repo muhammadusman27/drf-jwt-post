@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, PostSerializer, CommentSerializer, LikeSerializer
 from .models import *
+from .permissions import IsOwnerOrReadOnly
 # Create your views here.
 
 #Register view
@@ -20,15 +21,18 @@ class RegisterUser(generics.GenericAPIView):
 
 
 class PostView(viewsets.ModelViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
 
 class CommentView(viewsets.ModelViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
 
 class LikeView(viewsets.ModelViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
